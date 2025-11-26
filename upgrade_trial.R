@@ -1,4 +1,3 @@
-# final_pitchmaps_app_fixed_everything.R
 library(shiny)
 library(dplyr)
 library(tidyr)
