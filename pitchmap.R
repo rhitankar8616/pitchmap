@@ -6,11 +6,35 @@ library(readr)
 library(scales)
 
 # ---------------------------------------------------------
-# LOAD DATA (use your path)
+# LOAD DATA
 # ---------------------------------------------------------
-csv_path <- "//Users//rhitankarsmacbook//Library//Mobile Documents//com~apple~CloudDocs//pitchmap_app//test_bbb-25.csv"
+data_dir  <- "datasets"
+data_file <- "test_bbb-25.csv"
+local_path <- file.path(data_dir, data_file)
+remote_csv_url <- "https://www.dropbox.com/scl/fi/uxl3ofsbm82ko3kt6c7zb/test_bbb-25.csv?rlkey=5vmwnrfw74mgoa9yrq2ig59eq&st=o017dioz&dl=1"
 
-test <- read_csv(csv_path) %>%
+# ensure datasets folder exists
+if (!dir.exists(data_dir)) dir.create(data_dir, recursive = TRUE)
+
+# download only if file not present
+if (!file.exists(local_path)) {
+  message("Downloading large dataset (~500MB). This may take several minutes...")
+  # increase timeout for large download
+  old_to <- getOption("timeout")
+  options(timeout = 1200)  # 20 minutes
+  tryCatch({
+    download.file(remote_csv_url, destfile = local_path, mode = "wb")
+  }, error = function(e){
+    stop("Failed to download dataset. Check the remote URL and network. Error: ", e$message)
+  }, finally = {
+    options(timeout = old_to)
+  })
+} else {
+  message("Using local dataset at: ", local_path)
+}
+
+# Now read the CSV (use readr for speed)
+test <- read_csv(local_path) %>%
   mutate(across(where(is.character), ~ na_if(., "")))
 
 if ("date" %in% names(test)) test$date <- as.Date(test$date)

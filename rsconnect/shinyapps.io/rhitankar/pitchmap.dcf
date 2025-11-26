@@ -1,0 +1,10 @@
+name: pitchmap
+title: pitchmap
+username: rhitankar
+account: rhitankar
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 16172260
+bundleId: 11234796
+url: https://rhitankar.shinyapps.io/pitchmap/
+version: 1
