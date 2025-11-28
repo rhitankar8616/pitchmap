@@ -14,6 +14,5 @@ This repository contains:
 ---
 
 ### **Clone the repository**
-```bash
 git clone https://github.com/rhitankar8616/pitchmap.git
 cd pitchmap
